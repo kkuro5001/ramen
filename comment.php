@@ -11,13 +11,48 @@
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $store_name = $_POST['store_name'];
             $comment = $_POST['comment'];
-            $taste = $_POST['taste'];
-            $user_id = $_SESSION['user_id']; // セッションからユーザーIDを取得
-            //$date = date('Y-m-d H:i:s'); // 現在の日時を取得余裕があればやる
-
-            //画像ファイルをアップロードする
-
+            $taste_name = $_POST['taste'];
+            $user_id = $_SESSION['user_id'];
+        
+            // 味のIDを取得
+            $taste_stmt = $pdo->prepare("SELECT ID FROM taste WHERE NAME = :name");
+            $taste_stmt->bindParam(':name', $taste_name, PDO::PARAM_STR);
+            $taste_stmt->execute();
+            $taste_row = $taste_stmt->fetch(PDO::FETCH_ASSOC);
+            $taste_id = $taste_row ? $taste_row['ID'] : null;
+        
+            // 写真データ取得
+            $photo_data = null;
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                $photo_data = file_get_contents($_FILES['photo']['tmp_name']);
+            }
+        
+            if ($taste_id) {
+                // レビュー情報を挿入
+                $stmt = $pdo->prepare("INSERT INTO ramen_reviews (STORE_NAME, COMMENT, TASTE_ID, USER_ID) 
+                                       VALUES (:store_name, :comment, :taste_id, :user_id)");
+                $stmt->bindParam(':store_name', $store_name);
+                $stmt->bindParam(':comment', $comment);
+                $stmt->bindParam(':taste_id', $taste_id, PDO::PARAM_INT);
+                $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $stmt->execute();
+                
+                $review_id = $pdo->lastInsertId(); // 新しいレビューIDを取得
+        
+                // 画像があれば別テーブルに保存
+                if ($photo_data) {
+                    $photo_stmt = $pdo->prepare("INSERT INTO ramen_photos (REVIEW_ID, PHOTO) VALUES (:review_id, :photo)");
+                    $photo_stmt->bindParam(':review_id', $review_id, PDO::PARAM_INT);
+                    $photo_stmt->bindParam(':photo', $photo_data, PDO::PARAM_LOB);
+                    $photo_stmt->execute();
+                }
+        
+                echo "<p>レビューを保存しました！</p>";
+            } else {
+                echo "<p>味の選択が無効です。</p>";
+            }
         }
+        
 
     } catch (PDOException $e) {
         echo "エラー: " . $e->getMessage();
@@ -39,7 +74,7 @@
             <form id="review-form" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="store-name">店名:</label>
-                    <input type="text" id="store-name" name="store-name" required>
+                    <input type="text" id="store-name" name="store_name" required>
                 </div>
                 <div class="form-group">
                     <label for="comment">コメント:</label>
@@ -66,25 +101,25 @@
         </div>
 
         <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $storeName = htmlspecialchars($_POST['store-name']);
-            $comment = htmlspecialchars($_POST['comment']);
-            $taste = htmlspecialchars($_POST['taste']);
-            $photo = $_FILES['photo'];
+        // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        //     $storeName = htmlspecialchars($_POST['store-name']);
+        //     $comment = htmlspecialchars($_POST['comment']);
+        //     $taste = htmlspecialchars($_POST['taste']);
+        //     $photo = $_FILES['photo'];
 
-            if ($photo['error'] == 0) {
-                $photoPath = 'uploads/' . basename($photo['name']);
-                move_uploaded_file($photo['tmp_name'], $photoPath);
-                echo "<div class='review'>
-                        <h2>$storeName</h2>
-                        <p><strong>コメント:</strong> $comment</p>
-                        <p><strong>味:</strong> $taste</p>
-                        <img src='$photoPath' alt='写真'>
-                      </div>";
-            } else {
-                echo "<p>写真のアップロードに失敗しました。</p>";
-            }
-        }
+        //     if ($photo['error'] == 0) {
+        //         $photoPath = 'uploads/' . basename($photo['name']);
+        //         move_uploaded_file($photo['tmp_name'], $photoPath);
+        //         echo "<div class='review'>
+        //                 <h2>$storeName</h2>
+        //                 <p><strong>コメント:</strong> $comment</p>
+        //                 <p><strong>味:</strong> $taste</p>
+        //                 <img src='$photoPath' alt='写真'>
+        //               </div>";
+        //     } else {
+        //         echo "<p>写真のアップロードに失敗しました。</p>";
+        //     }
+        // }
         ?>
     </div>
     <script src="scripts.js"></script>
