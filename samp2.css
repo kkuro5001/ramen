@@ -128,6 +128,7 @@ body.dimmed #overlay {
 
 .modal-content {
     position: relative;
+    font-family: 'Helvetica', 'Arial', sans-serif; /* Ensure modal content uses the same font */
 }
 
 .close-button {
@@ -136,11 +137,57 @@ body.dimmed #overlay {
     right: 10px;
     font-size: 1.5rem;
     cursor: pointer;
+    background-color: #007aff; /* 青色に変更 */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
-#login-form label, #login-form input, #login-form button {
+#login-form label, #login-form input, #login-form button,
+#new-login-form label, #new-login-form input, #new-login-form button {
     display: block;
     width: 100%;
     margin-bottom: 0.5rem;
     font-size: 1rem;
+    font-family: 'Helvetica', 'Arial', sans-serif; /* Ensure form elements use the same font */
+}
+
+#login-form button, #new-login-form button {
+    background-color: #007aff; /* 青色に変更 */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.footer-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-top: 2px solid #00bfff; /* 水色の枠組み */
+}
+
+.footer-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #007aff; /* 青色に変更 */
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.footer-buttons {
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 1rem;
+    border-top: 2px solid #00bfff; /* 水色の枠組み */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
