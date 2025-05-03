@@ -37,7 +37,7 @@ label {
     text-align: right; /* Align text to the right */
 }
 
-input[type="email"], input[type="password"] {
+input[type="text"], input[type="email"], input[type="password"] {
     font-family: 'Helvetica', 'Arial', sans-serif; /* Ensure input fields use the same font */
     width: 70%; /* Adjust width as needed */
     padding: 0.5rem;
@@ -234,4 +234,20 @@ body.dimmed #overlay {
     padding: 1rem;
     border-top: 2px solid #00bfff; /* 水色の枠組み */
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+    }
+
+    label, input {
+        width: 100%;
+        text-align: left;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

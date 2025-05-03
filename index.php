@@ -95,3 +95,25 @@ try {
     <script src="samp1.js"></script>
 </body>
 </html>
+
+<script>
+    // アカウント情報ページに遷移
+    document.getElementById("account-display").addEventListener("click", function() {
+        window.location.href = "account_page.html";  // 遷移先のページURL
+    });
+
+    // 記録ページに遷移
+    document.getElementById("record-button").addEventListener("click", function() {
+        window.location.href = "record_page.html";  // 遷移先のページURL
+    });
+
+    // 今見ている画面に遷移
+    document.getElementById("current-screen-button").addEventListener("click", function() {
+        window.location.href = "current_screen.html";  // 遷移先のページURL
+    });
+
+    // 書き込みページに遷移
+    document.getElementById("write-button").addEventListener("click", function() {
+        window.location.href = "comment.php";  // 遷移先のページURL
+    });
+</script>
