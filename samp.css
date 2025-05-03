@@ -1,0 +1,146 @@
+body {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    background-color: #fff;
+    margin: 0;
+    padding: 1rem;
+    color: #222;
+}
+
+.container {
+    max-width: 480px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #007aff; /* 青色に変更 */
+}
+
+.header-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.header-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #007aff; /* 青色に変更 */
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.search {
+    border: 2px solid #00bfff; /* 水色の枠組み */
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.search input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #007aff; /* 青色に変更 */
+    border-radius: 5px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tags button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    background-color: #007aff; /* 青色に変更 */
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.search label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.record {
+    border: 2px solid #00bfff; /* 水色の枠組み */
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.record h3 {
+    margin: 0.5rem 0;
+    color: #007aff; /* 青色に変更 */
+}
+
+.record p {
+    margin: 0.3rem 0;
+}
+
+a {
+    color: #007aff; /* 青色に変更 */
+    text-decoration: none;
+}
+
+body.dimmed {
+    overflow: hidden;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+body.dimmed #overlay {
+    display: block;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    z-index: 1001;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+#login-form label, #login-form input, #login-form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
