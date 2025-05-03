@@ -2,26 +2,31 @@
 session_start();
 require_once __DIR__ . '/db.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
-    $stmt = $pdo->prepare("SELECT * FROM login WHERE EMAIL = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("SELECT * FROM login WHERE EMAIL = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && $user['PASSWORD'] === $password) {
-        $_SESSION['user_id'] = $user['ID'];
-        $_SESSION['user_name'] = $user['NAME'];
-        echo "ログイン成功！ようこそ " . htmlspecialchars($user['NAME']) . " さん";
-    } else {
-        echo "メールアドレスまたはパスワードが間違っています。";
+        if ($user && $user['PASSWORD'] === $password) {
+            $_SESSION['user_id'] = $user['ID'];
+            $_SESSION['user_name'] = $user['NAME'];
+            echo "ログイン成功！ようこそ " . htmlspecialchars($user['NAME']) . " さん";
+        } else {
+            echo "メールアドレスまたはパスワードが間違っています。";
+        }
+
+        // echo "メールアドレス: " . htmlspecialchars($email) . "<br>";
+        // echo "パスワード: " . htmlspecialchars($password) . "<br>";
     }
-
-    // echo "メールアドレス: " . htmlspecialchars($email) . "<br>";
-    // echo "パスワード: " . htmlspecialchars($password) . "<br>";
+} catch (PDOException $e) {
+    echo "エラー: " . $e->getMessage();
 }
+
 ?>
 
 <!DOCTYPE html>
