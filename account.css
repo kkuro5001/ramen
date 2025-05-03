@@ -18,4 +18,39 @@ h1 {
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #00bfff; /* 水色の枠線 */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 2px solid #00bfff; /* 水色の枠線 */
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #e0f7ff; /* Light blue background for headers */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #00bfff; /* Blue background for the button */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #009acd; /* Darker blue on hover */
 }

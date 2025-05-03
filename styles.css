@@ -107,4 +107,12 @@ button:hover {
         padding: 0.5rem;
         font-size: 0.9rem;
     }
+
+    .review {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+    }
+    
 }

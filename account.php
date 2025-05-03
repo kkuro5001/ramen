@@ -16,18 +16,15 @@
             $user_id = $_SESSION['user_id'];
 
             // Fetch accounts for the logged-in user
-            $stmt = $pdo->prepare("SELECT USERNAME, PASSWORD FROM accounts WHERE ID = :user_id ORDER BY CREATED_AT DESC");
+            $stmt = $pdo->prepare("SELECT NAME, PASSWORD, EMAIL FROM login WHERE ID = :user_id");
             $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
             $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            // Return as JSON
-            echo json_encode($accounts);
         } else {
-            echo json_encode(['error' => 'User not logged in']);
+            $accounts = ['error' => 'User not logged in'];
         }
     } catch (PDOException $e) {
-        echo 'Connection failed: ' . $e->getMessage();
+        $accounts = ['error' => 'Connection failed: ' . $e->getMessage()];
     }
 ?>
 <!DOCTYPE html>
@@ -37,9 +34,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Information</title>
     <link rel="stylesheet" href="account.css">
-</head>
-<body>
+</>
     <h1>Account Information</h1>
+    <div id="account-info">
+        <?php if (isset($accounts['error'])): ?>
+            <p><?php echo $accounts['error']; ?></p>
+        <?php else: ?>
+            <table>
+                <tr>
+                    <th>アカウント</th>
+                    <th>パスワード</th>
+                    <th>メールアドレス</th>
+                </tr>
+                <?php foreach ($accounts as $account): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($account['NAME'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php echo htmlspecialchars($account['PASSWORD'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php echo htmlspecialchars($account['EMAIL'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+            <div class="button-container">
+                <form action="logout.php" method="post">
+                    <button type="submit">ログアウト</button>
+                </form>
+            </div>
+        <?php endif; ?>
+    </div>
     <script src="account.js"></script>
 </body>
 </html>
