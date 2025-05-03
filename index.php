@@ -86,10 +86,10 @@ try {
     </div>
 
     <div class="footer-buttons">
-        <button id="account-display">アカウント情報</button>
-        <button id="record-button">記録</button>
-        <button id="current-screen-button">今見ている画面</button>
+        <button id="current-screen-button">口コミ</button>
         <button id="write-button">書き込み</button>
+        <button id="record-button">記録</button>
+        <button id="account-display">アカウント情報</button>
     </div>
 
     <script src="samp1.js"></script>
@@ -99,7 +99,7 @@ try {
 <script>
     // アカウント情報ページに遷移
     document.getElementById("account-display").addEventListener("click", function() {
-        window.location.href = "account_page.html";  // 遷移先のページURL
+        window.location.href = "account.php";// 遷移先のページURL
     });
 
     // 記録ページに遷移
@@ -107,9 +107,9 @@ try {
         window.location.href = "record_page.html";  // 遷移先のページURL
     });
 
-    // 今見ている画面に遷移
+    // 口コミ画面に遷移
     document.getElementById("current-screen-button").addEventListener("click", function() {
-        window.location.href = "current_screen.html";  // 遷移先のページURL
+        window.location.href = "index.php";  // 遷移先のページURL
     });
 
     // 書き込みページに遷移
