@@ -226,15 +226,19 @@ body.dimmed #overlay {
 
 .footer-buttons {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 1rem;
     position: fixed;
     bottom: 0;
     width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #fff;
     padding: 1rem;
-    border-top: 2px solid #00bfff; /* 水色の枠組み */
+    border-top: 2px solid #00bfff;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
+
 
 @media (max-width: 600px) {
     .container {

@@ -16,41 +16,51 @@
             $user_id = $_SESSION['user_id'];
 
             // Fetch accounts for the logged-in user
-            $stmt = $pdo->prepare("SELECT NAME, PASSWORD, EMAIL FROM login WHERE ID = :user_id");
-            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $stmt->execute();
-            $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            $accounts = ['error' => 'User not logged in'];
+            // Fetch account and review count for the logged-in user
+    $stmt = $pdo->prepare("
+    SELECT
+        l.NAME, l.PASSWORD, l.EMAIL,
+        COUNT(r.ID) AS review_count
+    FROM login l
+    LEFT JOIN ramen_reviews r ON l.ID = r.USER_ID
+    WHERE l.ID = :user_id
+    GROUP BY l.ID
+    ");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            } else {
+                $accounts = ['error' => 'User not logged in'];
+            }
+        } catch (PDOException $e) {
+            $accounts = ['error' => 'Connection failed: ' . $e->getMessage()];
         }
-    } catch (PDOException $e) {
-        $accounts = ['error' => 'Connection failed: ' . $e->getMessage()];
-    }
-?>
+    ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Information</title>
+    <title>アカウント情報</title>
     <link rel="stylesheet" href="account.css">
 </>
-    <h1>Account Information</h1>
+    <h1>アカウント情報</h1>
     <div id="account-info">
         <?php if (isset($accounts['error'])): ?>
             <p><?php echo $accounts['error']; ?></p>
         <?php else: ?>
             <table>
                 <tr>
-                    <th>アカウント</th>
-                    <th>パスワード</th>
+                    <th>ユーザー名</th>
                     <th>メールアドレス</th>
+                    <th>投稿回数</th>
                 </tr>
                 <?php foreach ($accounts as $account): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($account['NAME'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($account['PASSWORD'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td><?php echo htmlspecialchars($account['EMAIL'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php echo htmlspecialchars($account['review_count'], ENT_QUOTES, 'UTF-8'); ?></td> <!-- ← 追加 -->
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -61,6 +71,7 @@
             </div>
         <?php endif; ?>
     </div>
-    <script src="account.js"></script>
 </body>
+<?php include 'footer.php'; ?>
+<script src="account.js"></script>
 </html>
