@@ -1,20 +1,43 @@
 <?php
-    require_once __DIR__ . '/db.php';
-    // DB接続
+session_start();
+require_once __DIR__ . '/db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $stmt = $pdo->prepare("SELECT * FROM login WHERE EMAIL = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && $user['PASSWORD'] === $password) {
+        $_SESSION['user_id'] = $user['ID'];
+        $_SESSION['user_name'] = $user['NAME'];
+        echo "ログイン成功！ようこそ " . htmlspecialchars($user['NAME']) . " さん";
+    } else {
+        echo "メールアドレスまたはパスワードが間違っています。";
+    }
+
+    // echo "メールアドレス: " . htmlspecialchars($email) . "<br>";
+    // echo "パスワード: " . htmlspecialchars($password) . "<br>";
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Myラーメン記録帳</title>
-    <link rel="stylesheet" href="samp.css">
+    <link rel="stylesheet" href="samp2.css">
 </head>
 <body>
     <div class="container">
         <h1>Myラーメン記録帳</h1>
         
         <div class="header-buttons">
+
             <button id="login-button">ログイン / 新規作成</button>
         </div>
         
@@ -46,17 +69,24 @@
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2>ログイン</h2>
-            <form id="login-form">
+            <form id="login-form" method="POST">
                 <label for="email">メールアドレス:</label>
                 <input type="email" id="email" name="email" required>
                 <label for="password">パスワード:</label>
                 <input type="password" id="password" name="password" required>
                 <button type="submit">ログイン</button>
-                <button id="signup-button">新規作成</button>
+                <button type="button" id="signup-button">新規作成</button>
             </form>
         </div>
     </div>
-    
-    <script src="samp.js"></script>
+
+    <div class="footer-buttons">
+        <button id="account-display">アカウント情報</button>
+        <button id="record-button">記録</button>
+        <button id="current-screen-button">今見ている画面</button>
+        <button id="write-button">書き込み</button>
+    </div>
+
+    <script src="samp1.js"></script>
 </body>
 </html>
