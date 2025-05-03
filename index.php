@@ -104,7 +104,7 @@ try {
 
     // 記録ページに遷移
     document.getElementById("record-button").addEventListener("click", function() {
-        window.location.href = "record_page.html";  // 遷移先のページURL
+        window.location.href = "record.php";  // 遷移先のページURL
     });
 
     // 口コミ画面に遷移
