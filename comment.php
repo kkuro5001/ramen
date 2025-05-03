@@ -1,27 +1,27 @@
 <?php
-    // require_once __DIR__ . '/db.php';
+    require_once __DIR__ . '/db.php';
 
-    // session_start(); // セッションを開始
-    // if (!isset($_SESSION['user_id'])) {
-    //     header("Location: index.php"); // ログインしていない場合はログインページにリダイレクト
-    //     exit;
-    // }
+    session_start(); // セッションを開始
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: index.php"); // ログインしていない場合はログインページにリダイレクト
+        exit;
+    }
 
-    // try {
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $store_name = $_POST['store_name'];
-    //         $comment = $_POST['comment'];
-    //         $taste = $_POST['taste'];
-    //         $user_id = $_SESSION['user_id']; // セッションからユーザーIDを取得
-    //         //$date = date('Y-m-d H:i:s'); // 現在の日時を取得余裕があればやる
+    try {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $store_name = $_POST['store_name'];
+            $comment = $_POST['comment'];
+            $taste = $_POST['taste'];
+            $user_id = $_SESSION['user_id']; // セッションからユーザーIDを取得
+            //$date = date('Y-m-d H:i:s'); // 現在の日時を取得余裕があればやる
 
-    //         //画像ファイルをアップロードする
+            //画像ファイルをアップロードする
 
-    //     }
+        }
 
-    // } catch (PDOException $e) {
-    //     echo "エラー: " . $e->getMessage();
-    // }
+    } catch (PDOException $e) {
+        echo "エラー: " . $e->getMessage();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +80,7 @@
                         <p><strong>コメント:</strong> $comment</p>
                         <p><strong>味:</strong> $taste</p>
                         <img src='$photoPath' alt='写真'>
-                    </div>";
+                      </div>";
             } else {
                 echo "<p>写真のアップロードに失敗しました。</p>";
             }
