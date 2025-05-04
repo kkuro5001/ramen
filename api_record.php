@@ -1,11 +1,17 @@
 <?php
+session_start(); // セッションを開始
 // DB接続情報
 $host = 'localhost';
 $dbname = 'anything';
 $username = 'kkuro';
 $password = '5001';
 
-session_start(); // セッション開始
+// セッションの確認
+if (isset($_SESSION['user_id'])) {
+    echo "ログイン中: ユーザーID = " . $_SESSION['user_id'] . ", ユーザー名 = " . $_SESSION['user_name'];
+} else {
+    echo "ログインしていません";
+}
 
 try {
     // api_record.php

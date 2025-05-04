@@ -12,13 +12,17 @@ try {
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && $user['PASSWORD'] === $password) {
+        if ($user && password_verify($password, $user['PASSWORD'])) {
             $_SESSION['user_id'] = $user['ID'];
             $_SESSION['user_name'] = $user['NAME'];
             echo "ログイン成功！ようこそ " . htmlspecialchars($user['NAME']) . " さん";
+            // デバッグ用にセッション情報を確認
+    var_dump($_SESSION); // ここでセッション内容が表示される
+    exit; // これでセッション内容が見れるようになります
         } else {
             echo "メールアドレスまたはパスワードが間違っています。";
         }
+        
 
         // echo "メールアドレス: " . htmlspecialchars($email) . "<br>";
         // echo "パスワード: " . htmlspecialchars($password) . "<br>";

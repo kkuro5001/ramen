@@ -1,4 +1,12 @@
 <?php
+session_start(); // Start the session
+session_unset(); // Unset all session variables
+session_destroy(); // Destroy the session
+header("Location: index.php"); // Redirect to the login page
+exit;
+?>
+
+<?php
     // Database connection
     $host = 'localhost';
     $dbname = 'anything';
@@ -15,28 +23,26 @@
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
 
-            // Fetch accounts for the logged-in user
             // Fetch account and review count for the logged-in user
-    $stmt = $pdo->prepare("
-    SELECT
-        l.NAME, l.PASSWORD, l.EMAIL,
-        COUNT(r.ID) AS review_count
-    FROM login l
-    LEFT JOIN ramen_reviews r ON l.ID = r.USER_ID
-    WHERE l.ID = :user_id
-    GROUP BY l.ID
-    ");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            } else {
-                $accounts = ['error' => 'User not logged in'];
-            }
-        } catch (PDOException $e) {
-            $accounts = ['error' => 'Connection failed: ' . $e->getMessage()];
+            $stmt = $pdo->prepare("
+                SELECT
+                    l.NAME, l.PASSWORD, l.EMAIL,
+                    COUNT(r.ID) AS review_count
+                FROM login l
+                LEFT JOIN ramen_reviews r ON l.ID = r.USER_ID
+                WHERE l.ID = :user_id
+                GROUP BY l.ID
+            ");
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $accounts = ['error' => 'User not logged in'];
         }
-    ?>
+    } catch (PDOException $e) {
+        $accounts = ['error' => 'Connection failed: ' . $e->getMessage()];
+    }
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -44,7 +50,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>アカウント情報</title>
     <link rel="stylesheet" href="account.css">
-</>
+</head>
+<body>
     <h1>アカウント情報</h1>
     <div id="account-info">
         <?php if (isset($accounts['error'])): ?>
@@ -60,7 +67,7 @@
                     <tr>
                         <td><?php echo htmlspecialchars($account['NAME'], ENT_QUOTES, 'UTF-8'); ?></td>
                         <td><?php echo htmlspecialchars($account['EMAIL'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($account['review_count'], ENT_QUOTES, 'UTF-8'); ?></td> <!-- ← 追加 -->
+                        <td><?php echo htmlspecialchars($account['review_count'], ENT_QUOTES, 'UTF-8'); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -71,7 +78,8 @@
             </div>
         <?php endif; ?>
     </div>
+    <?php include 'footer.php'; ?>
     <script src="account.js"></script>
+    <script src="footer.js"></script>
 </body>
-<?php include 'footer.php'; ?>
 </html>

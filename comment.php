@@ -76,7 +76,7 @@
                 </div>
                 <div class="form-group">
                     <label for="comment">コメント:</label>
-                    <textarea id="comment" name="comment" required></textarea>
+                    <textarea id="comment" name="comment" required oninput="adjustTextareaHeight(this)"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="taste">味:</label>
@@ -99,8 +99,25 @@
         </div>
 
     </div>
+    <?php include 'footer.php'; ?>
     <script src="scripts.js"></script>
+    <script src="footer.js"></script>
+    <script>
+        function showTasteOptions() {
+            document.getElementById('taste-options').style.display = 'flex';
+        }
+ 
+        function selectTaste(taste) {
+            document.getElementById('taste').value = taste;
+            document.getElementById('taste-button').textContent = taste;
+            document.getElementById('taste-options').style.display = 'none';
+        }
+ 
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+    </script>
 </body>
-<?php include 'footer.php'; ?>
 
 </html>
