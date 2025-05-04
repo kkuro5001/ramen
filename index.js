@@ -11,67 +11,77 @@ document.addEventListener('DOMContentLoaded', () => {
     const recordButton = document.getElementById('record-button');
     const currentScreenButton = document.getElementById('current-screen-button');
     const writeButton = document.getElementById('write-button');
+    const tasteSelect = document.getElementById('taste-select');
 
-    const ramenShops = [
-        {
-            id: 1,
-            shopName: '麺屋 魂心家',
-            price: 850,
-            taste: '豚骨',
-            address: '大阪市北区桐田3-1',
-            comment: '濃厚スープに中太麺がよう絡んで最高！ライス無料もありがたい！',
-            userName: 'ラーメン太郎',
-            photo: 'ramen1.jpg',
-            favorite: false
-        },
-        {
-            id: 2,
-            shopName: 'らーめん亀王',
-            price: 780,
-            taste: '醤油',
-            address: '大阪市北区桐田3-1',
-            comment: '昔ながらの味やけど、チャーシューがトロトロで虜になる！',
-            userName: 'ラーメン次郎',
-            photo: 'ramen2.jpg',
-            favorite: true
-        }
-        // 他のラーメン店のデータ
-    ];
+    let ramenShops = [];
+    let selectedTaste = '';
 
+    // ラーメン店リストを表示する関数
     function displayRamenShops(shops) {
         ramenList.innerHTML = '';
         shops.forEach(shop => {
             const shopItem = document.createElement('div');
             shopItem.className = 'record';
             shopItem.innerHTML = `
-                <h3>${shop.shopName}</h3>
-                <p><strong>${shop.taste}</strong>　¥${shop.price}</p>
-                <p>住所：${shop.address}</p>
-                <a href="#">GoogleMapで開く</a>
-                <p>${shop.comment}</p>
-                <p>友達：${shop.userName}</p>
+                <h3>${shop.STORE_NAME}</h3>
+                <p><strong>${shop.TASTE}</strong></p>
+                <p>コメント：${shop.COMMENT}</p>
+                <p>投稿者：${shop.USER_NAME}</p>
+                ${shop.PHOTO ? `<img src="${shop.PHOTO}" alt="ラーメン写真" style="width:200px;">` : ''}
+                <p>投稿日：${new Date(shop.DATE).toLocaleString()}</p>
             `;
             ramenList.appendChild(shopItem);
         });
     }
 
-    searchBar.addEventListener('input', () => {
-        const searchTerm = searchBar.value.toLowerCase();
-        const filteredShops = ramenShops.filter(shop => shop.shopName.toLowerCase().includes(searchTerm));
-        displayRamenShops(filteredShops);
-    });
+    // ラーメン店をフィルタリングする関数
+    function filterRamenShops() {
+        const nameTerm = searchBar.value.toLowerCase();
+        const selectedTasteValue = tasteSelect.value;
 
+        const filteredShops = ramenShops.filter(shop => {
+            const nameMatch = shop.STORE_NAME.toLowerCase().includes(nameTerm) || shop.COMMENT.toLowerCase().includes(nameTerm);
+            const tasteMatch = selectedTasteValue === '' || shop.TASTE === selectedTasteValue;
+
+            return nameMatch && tasteMatch;
+        });
+
+        displayRamenShops(filteredShops);
+    }
+
+    // ラーメン店データを取得する関数
+    function fetchRamenShops() {
+        fetch('get_ramen_data.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    ramenShops = data;
+                    displayRamenShops(ramenShops);
+                } else {
+                    console.error('取得エラー:', data.error);
+                }
+            })
+            .catch(error => console.error('通信エラー:', error));
+    }
+
+    // イベント設定
+    searchBar.addEventListener('input', filterRamenShops);
+    tasteSelect.addEventListener('change', filterRamenShops);
+
+    // ログインボタンの処理
     loginButton.addEventListener('click', () => {
         document.body.classList.add('dimmed');
         loginModal.style.display = 'block';
     });
 
+    // 新規作成ボタンの処理
     signupButton.addEventListener('click', (event) => {
         event.preventDefault();
         loginModal.style.display = 'none';
         newLoginModal.style.display = 'block';
     });
 
+    // 閉じるボタンの処理
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
             document.body.classList.remove('dimmed');
@@ -80,31 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // オーバーレイクリック時の処理
     overlay.addEventListener('click', () => {
         document.body.classList.remove('dimmed');
         loginModal.style.display = 'none';
         newLoginModal.style.display = 'none';
     });
 
-    recordButton.addEventListener('click', () => {
-        // 記録ボタンの機能を追加
-        console.log('Record button clicked');
-    });
-
-    currentScreenButton.addEventListener('click', () => {
-        // 今見ている画面ボタンの機能を追加
-        console.log('Current screen button clicked');
-    });
-
-    writeButton.addEventListener('click', () => {
-        // 書き込みボタンの機能を追加
-        console.log('Write button clicked');
-    });
-
-    displayRamenShops(ramenShops);
+    // 初期データ取得
+    fetchRamenShops();
 });
 
-// samp1.js に追加
+// 新規作成ボタンをクリックした場合の遷移
 document.getElementById('signup-button').addEventListener('click', function () {
-    window.location.href = 'signup.php'; // ここを新規作成ページのURLに変える
+    window.location.href = 'signup.php';
 });

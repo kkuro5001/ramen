@@ -11,15 +11,21 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         .review {
-            border: 1px solid #ccc;
+            border: 2px solid #00bfff; /* Light blue border */
             padding: 15px;
             margin: 10px 0;
             border-radius: 8px;
+            display: flex;
+            flex-direction: row-reverse; /* Position image on the right */
+            align-items: center;
         }
         .review img {
-            max-width: 300px;
-            display: block;
-            margin-top: 10px;
+            max-width: 150px; /* Adjust the size as needed */
+            margin-left: 15px; /* Space between image and text */
+            border-radius: 8px;
+        }
+        .review-content {
+            flex: 1;
         }
     </style>
 </head>
@@ -37,7 +43,7 @@
                     reviewsContainer.innerHTML = ''; // 初期化
 
                     if (reviews.error) {
-                        reviewsContainer.innerHTML = '<p>レビューの読み込みに失敗しました。</p>';
+                        reviewsContainer.innerHTML = '<p>レビューの読み込みに失敗しました。再度お試しください。</p>';
                     } else if (reviews.length === 0) {
                         reviewsContainer.innerHTML = '<p>レビューがまだありません。</p>';
                     } else {
@@ -51,10 +57,12 @@
                             }
 
                             reviewElement.innerHTML = `
-                                <h2>${review.STORE_NAME}</h2>
-                                <p><strong>コメント:</strong> ${review.COMMENT}</p>
-                                <p><strong>味:</strong> ${review.TASTE_NAME}</p>
-                                <p><strong>投稿日:</strong> ${new Date(review.DATE).toLocaleString()}</p>
+                                <div class="review-content">
+                                    <h2>${review.STORE_NAME}</h2>
+                                    <p><strong>コメント:</strong> ${review.COMMENT}</p>
+                                    <p><strong>味:</strong> ${review.TASTE_NAME}</p>
+                                    <p><strong>投稿日:</strong> ${new Date(review.DATE).toLocaleString()}</p>
+                                </div>
                                 ${photoHTML}
                             `;
                             reviewsContainer.appendChild(reviewElement);
@@ -63,7 +71,7 @@
                 })
                 .catch(error => {
                     const reviewsContainer = document.getElementById('reviews');
-                    reviewsContainer.innerHTML = '<p>レビューの読み込みに失敗しました。</p>';
+                    reviewsContainer.innerHTML = '<p>レビューの読み込みに失敗しました。再度お試しください。</p>';
                     console.error('Fetch error:', error);
                 });
         });

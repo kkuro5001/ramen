@@ -254,4 +254,50 @@ body.dimmed #overlay {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    button.selected {
+        background-color: #f00;
+        color: white;
+    }
+
+    /* 味のプルダウンのスタイル */
+.taste-filter {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.taste-filter label {
+    font-size: 1rem;
+    color: #007aff;
+}
+
+/* プルダウンのスタイル強化 */
+.taste-filter select {
+    padding: 0.5rem !important;
+    font-size: 1rem !important;
+    border: 2px solid #007aff !important;
+    border-radius: 5px !important;
+    width: 100% !important;
+    background-color: white !important;
+    color: #007aff !important;
+    cursor: pointer !important;
+    transition: border-color 0.3s ease !important; /* フォーカス時の色変更アニメーション */
+}
+
+.taste-filter select:focus {
+    border-color: #005bb5 !important; /* フォーカス時に色を変更 */
+    outline: none !important; /* フォーカスリングを消す */
+}
+
+
+
+/* フォーカス時にボーダー色を変更 */
+.taste-filter select:focus {
+    border-color: #005bb5;
+    outline: none;
+}
+
+
 }

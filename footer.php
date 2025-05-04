@@ -7,24 +7,6 @@
 </div>
 
 <style>
-    .footer-buttons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-    padding: 1rem;
-    border-top: 2px solid #00bfff; /* 水色の枠組み */
-}
-
-.footer-buttons button {
-    padding: 0.5rem 1rem;
-    border: none;
-    background-color: #007aff; /* 青色に変更 */
-    color: white;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
 .footer-buttons {
     display: flex;
     justify-content: center;
@@ -39,26 +21,13 @@
     border-top: 2px solid #00bfff;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
-
+.footer-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #007aff;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
 </style>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("account-display")?.addEventListener("click", function() {
-        window.location.href = "account.php";
-    });
-
-    document.getElementById("record-button")?.addEventListener("click", function() {
-        window.location.href = "record.php";
-    });
-
-    document.getElementById("current-screen-button")?.addEventListener("click", function() {
-        window.location.href = "index.php";
-    });
-
-    document.getElementById("write-button")?.addEventListener("click", function() {
-        window.location.href = "comment.php";
-    });
-});
-
-</script>

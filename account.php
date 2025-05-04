@@ -71,7 +71,7 @@
             </div>
         <?php endif; ?>
     </div>
+    <script src="account.js"></script>
 </body>
 <?php include 'footer.php'; ?>
-<script src="account.js"></script>
 </html>

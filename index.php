@@ -35,7 +35,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Myラーメン記録帳</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css?v=1.0.1">
 </head>
 <body>
     <div class="container">
@@ -47,21 +47,24 @@ try {
         </div>
 
         <section class="search">
-            <h2>絞り込み検索</h2>
-            <input type="text" id="search-bar" placeholder="店名">
+    <h2>絞り込み検索</h2>
+    <input type="text" id="search-bar" placeholder="店名">
 
-            <div class="tags">
-                <button>味</button>
-                <button>醤油</button>
-                <button>味噌</button>
-                <button>豚骨</button>
-                <button>家系</button>
-                <button>その他</button>
-            </div>
+    <!-- 味のプルダウン -->
+    <div class="taste-filter">
+    <label for="taste-select">味を選択:</label>
+    <select id="taste-select">
+        <option value="">選択してください</option>
+        <option value="醤油">醤油</option>
+        <option value="味噌">味噌</option>
+        <option value="豚骨">豚骨</option>
+        <option value="家系">家系</option>
+        <option value="その他">その他</option>
+    </select>
+</div>
 
-            <input type="text" placeholder="エリア">
-            <!-- <label><input type="checkbox"> お気に入りのみ</label> -->
-        </section>
+</section>
+
 
         <section id="ramen-list">
             <!-- ラーメン店のリストがここに表示されます -->
@@ -84,8 +87,8 @@ try {
             </form>
         </div>
     </div>
-
+    <?php include 'footer.php'; ?>
     <script src="index.js"></script>
+    <script src="footer.js"></script>
 </body>
-<?php include 'footer.php'; ?>
 </html>
