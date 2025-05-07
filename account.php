@@ -1,12 +1,4 @@
 <?php
-session_start(); // Start the session
-session_unset(); // Unset all session variables
-session_destroy(); // Destroy the session
-header("Location: index.php"); // Redirect to the login page
-exit;
-?>
-
-<?php
     // Database connection
     $host = 'localhost';
     $dbname = 'anything';
@@ -43,6 +35,7 @@ exit;
         $accounts = ['error' => 'Connection failed: ' . $e->getMessage()];
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -58,7 +51,6 @@ exit;
             <p><?php echo $accounts['error']; ?></p>
         <?php else: ?>
             <table>
-                <tr>
                     <th>ユーザー名</th>
                     <th>メールアドレス</th>
                     <th>投稿回数</th>

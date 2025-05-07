@@ -1,18 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const ramenList = document.getElementById('ramen-list');
     const searchBar = document.getElementById('search-bar');
-    const loginButton = document.getElementById('login-button');
-    const signupButton = document.getElementById('signup-button');
+    const tasteSelect = document.getElementById('taste-select');
     const overlay = document.getElementById('overlay');
     const loginModal = document.getElementById('login-modal');
     const newLoginModal = document.getElementById('new-login-modal');
     const closeButtons = document.querySelectorAll('.close-button');
-    const accountDisplay = document.getElementById('account-display');
-    const recordButton = document.getElementById('record-button');
-    const currentScreenButton = document.getElementById('current-screen-button');
-    const writeButton = document.getElementById('write-button');
-    const tasteSelect = document.getElementById('taste-select');
-
+    
     let ramenShops = [];
     let selectedTaste = '';
 
@@ -23,11 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const shopItem = document.createElement('div');
             shopItem.className = 'record';
             shopItem.innerHTML = `
-                <h3>${shop.STORE_NAME}</h3>
-                <p><strong>${shop.TASTE}</strong></p>
+                <p><strong>${shop.STORE_NAME}</strong></p>
+                <p>${shop.TASTE}</p>
                 <p>コメント：${shop.COMMENT}</p>
                 <p>投稿者：${shop.USER_NAME}</p>
                 ${shop.PHOTO ? `<img src="${shop.PHOTO}" alt="ラーメン写真" style="width:200px;">` : ''}
+                <h3>
+                    <a href="https://www.google.com/maps/search/?q=${encodeURIComponent('ラーメン ' + shop.STORE_NAME)}" target="_blank" style="color: blue;">Google Mapで表示する</a>
+                </h3>
+
                 <p>投稿日：${new Date(shop.DATE).toLocaleString()}</p>
             `;
             ramenList.appendChild(shopItem);
@@ -64,22 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('通信エラー:', error));
     }
 
-    // イベント設定
+    // 検索・フィルタリングのイベント設定
     searchBar.addEventListener('input', filterRamenShops);
     tasteSelect.addEventListener('change', filterRamenShops);
-
-    // ログインボタンの処理
-    loginButton.addEventListener('click', () => {
-        document.body.classList.add('dimmed');
-        loginModal.style.display = 'block';
-    });
-
-    // 新規作成ボタンの処理
-    signupButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        loginModal.style.display = 'none';
-        newLoginModal.style.display = 'block';
-    });
 
     // 閉じるボタンの処理
     closeButtons.forEach(button => {

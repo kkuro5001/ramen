@@ -10,22 +10,32 @@
     <title>ラーメンログ</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-     .review {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    display: flex;
-    align-items: flex-start;
-    gap: 15px; /* Space between the image and the text */
-}
+        .review {
+            border: 2px solid #00bfff; /* Light blue border */
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px; /* Space between the text and the image */
+        }
 
-.review img {
-    max-width: 300px;
-    display: block;
-    margin-top: 0; /* Remove top margin to align with text */
-}
+        .review img {
+            max-width: 150px; /* Adjusted width for better alignment */
+            display: block;
+            margin-top: 0; /* Remove top margin to align with text */
+            order: 2; /* Move image to the right */
+        }
 
+        .review-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Space between text elements */
+        }
+
+        .review-content p {
+            margin: 0; /* Remove default margin */
+        }
     </style>
 </head>
 <body>
@@ -57,14 +67,22 @@
                             }
 
                             reviewElement.innerHTML = `
-                                <h2>${review.STORE_NAME}</h2>
-                                <p><strong>コメント:</strong> ${review.COMMENT}</p>
-                                <p><strong>味:</strong> ${review.TASTE_NAME}</p>
-                                <p><strong>投稿日:</strong> ${new Date(review.DATE).toLocaleString()}</p>
+                                <div class="review-content">
+                                    <h2>
+                                        ${review.STORE_NAME}
+                                        <a href="https://www.google.com/maps/search/?q=${encodeURIComponent(review.STORE_NAME)}" target="_blank" style="margin-left: 10px; font-size: 14px; color: blue;">
+                                            Google Mapで表示する
+                                        </a>
+                                    </h2>
+                                    <p><strong>コメント:</strong> ${review.COMMENT}</p>
+                                    <p><strong>味:</strong> ${review.TASTE_NAME}</p>
+                                    <p><strong>投稿日:</strong> ${new Date(review.DATE).toLocaleString()}</p>
+                                </div>
                                 ${photoHTML}
                             `;
                             reviewsContainer.appendChild(reviewElement);
                         });
+
                     }
                 })
                 .catch(error => {

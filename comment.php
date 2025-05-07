@@ -7,6 +7,8 @@
         exit;
     }
 
+    $message = ""; // メッセージ初期化
+
     try {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $store_name = $_POST['store_name'];
@@ -37,7 +39,7 @@
                 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
                 $stmt->execute();
 
-                $review_id = $pdo->lastInsertId(); // 新しいレビューIDを取得
+                $review_id = $pdo->lastInsertId();
 
                 // 画像があれば別テーブルに保存
                 if ($photo_data) {
@@ -46,14 +48,14 @@
                     $photo_stmt->bindParam(':photo', $photo_data, PDO::PARAM_LOB);
                     $photo_stmt->execute();
                 }
-                echo "<p>レビューを保存しました！</p>";
+
+                $message = "レビューを保存しました！";
             } else {
-                echo "<p>味の選択が無効です。</p>";
+                $message = "味の選択が無効です。";
             }
         }
-
     } catch (PDOException $e) {
-        echo "エラー: " . $e->getMessage();
+        $message = "エラー: " . $e->getMessage();
     }
 ?>
 
@@ -64,6 +66,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>店舗レビュー</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .form-group textarea {
+            overflow: hidden;
+            resize: none;
+        }
+        .message {
+            margin-top: 1em;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -80,7 +93,7 @@
                 </div>
                 <div class="form-group">
                     <label for="taste">味:</label>
-                    <button type="button" onclick="showTasteOptions()">味を選択</button>
+                    <button type="button" id="taste-button" onclick="showTasteOptions()">味を選択</button>
                     <div class="tags" id="taste-options" style="display: none;">
                         <button type="button" onclick="selectTaste('醤油')">醤油</button>
                         <button type="button" onclick="selectTaste('味噌')">味噌</button>
@@ -96,9 +109,14 @@
                 </div>
                 <button type="submit">送信</button>
             </form>
-        </div>
 
+            <!-- ✅ メッセージ表示位置 -->
+            <?php if (!empty($message)): ?>
+                <p class="message"><?= htmlspecialchars($message) ?></p>
+            <?php endif; ?>
+        </div>
     </div>
+
     <?php include 'footer.php'; ?>
     <script src="scripts.js"></script>
     <script src="footer.js"></script>
@@ -106,18 +124,17 @@
         function showTasteOptions() {
             document.getElementById('taste-options').style.display = 'flex';
         }
- 
+
         function selectTaste(taste) {
             document.getElementById('taste').value = taste;
             document.getElementById('taste-button').textContent = taste;
             document.getElementById('taste-options').style.display = 'none';
         }
- 
+
         function adjustTextareaHeight(textarea) {
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
         }
     </script>
 </body>
-
 </html>
