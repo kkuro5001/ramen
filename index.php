@@ -12,13 +12,13 @@ try {
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && $user['PASSWORD'] === $password) {
+        if ($user && password_verify($password, $user['PASSWORD'])) {
             $_SESSION['user_id'] = $user['ID'];
             $_SESSION['user_name'] = $user['NAME'];
-            echo "ログイン成功！ようこそ " . htmlspecialchars($user['NAME']) . " さん";
         } else {
             echo "メールアドレスまたはパスワードが間違っています。";
         }
+        
 
         // echo "メールアドレス: " . htmlspecialchars($email) . "<br>";
         // echo "パスワード: " . htmlspecialchars($password) . "<br>";
@@ -35,41 +35,44 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Myラーメン記録帳</title>
-    <link rel="stylesheet" href="samp2.css">
+    <link rel="stylesheet" href="index.css?v=1.0.1">
 </head>
 <body>
     <div class="container">
         <h1>Myラーメン記録帳</h1>
-        
+
         <div class="header-buttons">
 
             <button id="login-button">ログイン / 新規作成</button>
         </div>
-        
+
         <section class="search">
-            <h2>絞り込み検索</h2>
-            <input type="text" id="search-bar" placeholder="店名">
-            
-            <div class="tags">
-                <button>味</button>
-                <button>醤油</button>
-                <button>味噌</button>
-                <button>豚骨</button>
-                <button>家系</button>
-                <button>その他</button>
-            </div>
-            
-            <input type="text" placeholder="エリア">
-            <label><input type="checkbox"> お気に入りのみ</label>
-        </section>
-        
+    <h2>絞り込み検索</h2>
+    <input type="text" id="search-bar" placeholder="店名">
+
+    <!-- 味のプルダウン -->
+    <div class="taste-filter">
+    <label for="taste-select">味を選択:</label>
+    <select id="taste-select">
+        <option value="">選択してください</option>
+        <option value="醤油">醤油</option>
+        <option value="味噌">味噌</option>
+        <option value="豚骨">豚骨</option>
+        <option value="家系">家系</option>
+        <option value="その他">その他</option>
+    </select>
+</div>
+
+</section>
+
+
         <section id="ramen-list">
             <!-- ラーメン店のリストがここに表示されます -->
         </section>
     </div>
-    
+
     <div id="overlay"></div>
-    
+
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -84,36 +87,8 @@ try {
             </form>
         </div>
     </div>
-
-    <div class="footer-buttons">
-        <button id="current-screen-button">口コミ</button>
-        <button id="write-button">書き込み</button>
-        <button id="record-button">記録</button>
-        <button id="account-display">アカウント情報</button>
-    </div>
-
-    <script src="samp1.js"></script>
+    <?php include 'footer.php'; ?>
+    <script src="index.js"></script>
+    <script src="footer.js"></script>
 </body>
 </html>
-
-<script>
-    // アカウント情報ページに遷移
-    document.getElementById("account-display").addEventListener("click", function() {
-        window.location.href = "account.php";// 遷移先のページURL
-    });
-
-    // 記録ページに遷移
-    document.getElementById("record-button").addEventListener("click", function() {
-        window.location.href = "record.php";  // 遷移先のページURL
-    });
-
-    // 口コミ画面に遷移
-    document.getElementById("current-screen-button").addEventListener("click", function() {
-        window.location.href = "index.php";  // 遷移先のページURL
-    });
-
-    // 書き込みページに遷移
-    document.getElementById("write-button").addEventListener("click", function() {
-        window.location.href = "comment.php";  // 遷移先のページURL
-    });
-</script>
