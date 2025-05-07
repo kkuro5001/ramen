@@ -15,6 +15,13 @@ try {
         if ($user && password_verify($password, $user['PASSWORD'])) {
             $_SESSION['user_id'] = $user['ID'];
             $_SESSION['user_name'] = $user['NAME'];
+<<<<<<< HEAD
+=======
+            echo "ログイン成功！ようこそ " . htmlspecialchars($user['NAME']) . " さん";
+            // デバッグ用にセッション情報を確認
+    var_dump($_SESSION); // ここでセッション内容が表示される
+    exit; // これでセッション内容が見れるようになります
+>>>>>>> d4442cad9435f76855195243178bb1dadd2cb87a
         } else {
             echo "メールアドレスまたはパスワードが間違っています。";
         }
